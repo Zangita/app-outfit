@@ -13,6 +13,31 @@ def cutout_upload_path(instance, filename):
     return f"cutouts/{instance.owner_id}/{uuid.uuid4().hex}.png"
 
 
+def avatar_upload_path(instance, filename):
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "jpg"
+    return f"avatars/{instance.owner_id}/{uuid.uuid4().hex}.{ext}"
+
+
+def avatar_cutout_upload_path(instance, filename):
+    return f"avatars/{instance.owner_id}/{uuid.uuid4().hex}_cutout.png"
+
+
+def render_upload_path(instance, filename):
+    return f"renders/{instance.outfit.owner_id}/{uuid.uuid4().hex}.png"
+
+
+class AvatarPhoto(models.Model):
+    """Foto de cuerpo completo de la usuaria: la base real del probador."""
+
+    owner = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="avatar_photo")
+    image = models.ImageField(upload_to=avatar_upload_path)
+    cutout = models.ImageField(upload_to=avatar_cutout_upload_path, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Foto base de {self.owner.username}"
+
+
 class Garment(models.Model):
     class Category(models.TextChoices):
         TOP = "top", "Blusa / Top"
@@ -56,3 +81,17 @@ class Outfit(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class OutfitRender(models.Model):
+    """Imagen fotorrealista del outfit generada con IA (Gemini)."""
+
+    outfit = models.ForeignKey(Outfit, on_delete=models.CASCADE, related_name="renders")
+    image = models.ImageField(upload_to=render_upload_path)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Render de {self.outfit.name}"

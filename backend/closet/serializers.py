@@ -1,7 +1,25 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from .models import Garment, Outfit
+from .models import AvatarPhoto, Garment, Outfit, OutfitRender
+
+
+class AvatarPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AvatarPhoto
+        fields = ["image", "cutout", "updated_at"]
+        read_only_fields = ["cutout", "updated_at"]
+
+    def validate_image(self, value):
+        if value.size > settings.MAX_GARMENT_IMAGE_BYTES:
+            raise serializers.ValidationError("La foto no puede pesar más de 10 MB.")
+        return value
+
+
+class OutfitRenderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OutfitRender
+        fields = ["id", "image", "created_at"]
 
 
 class GarmentSerializer(serializers.ModelSerializer):
@@ -30,11 +48,12 @@ class OutfitItemSerializer(serializers.Serializer):
 
 class OutfitSerializer(serializers.ModelSerializer):
     items = OutfitItemSerializer(many=True)
+    renders = OutfitRenderSerializer(many=True, read_only=True)
 
     class Meta:
         model = Outfit
-        fields = ["id", "name", "occasion", "items", "favorite", "created_at", "updated_at"]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        fields = ["id", "name", "occasion", "items", "renders", "favorite", "created_at", "updated_at"]
+        read_only_fields = ["id", "renders", "created_at", "updated_at"]
 
     def validate_items(self, value):
         owner = self.context["request"].user

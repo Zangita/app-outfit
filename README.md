@@ -13,6 +13,11 @@ automáticamente y arma outfits sobre un avatar ilustrado para saber
   rotación y el orden de las capas hasta que el look quede perfecto.
 - 💖 **Mis outfits** — guarda tus combinaciones con nombre y ocasión,
   márcalas como favoritas y edítalas cuando quieras.
+- 📸 **Mi foto** — sube tu foto de cuerpo completo: se convierte en la base
+  real del probador (con el fondo recortado automáticamente).
+- 🪄 **Ver cómo me queda (IA)** — con un clic, Gemini genera una foto
+  fotorrealista tuya usando el outfit completo. Cada outfit guarda su
+  galería de renders.
 - 🔐 **Cuentas privadas** — sin registro público: solo las usuarias creadas
   a mano pueden entrar (JWT, contraseñas hasheadas, límite de intentos de login).
 
@@ -26,6 +31,7 @@ Funciona bonito tanto en la computadora como en el celular. 🌸
 | Backend | Django + Django REST Framework |
 | Auth | JWT (djangorestframework-simplejwt) con rate limiting |
 | Recorte de fondo | rembg (modelo U²-Net, corre local, sin servicios externos) |
+| Try-on realista | Gemini (imagen) vía google-genai; requiere `GEMINI_API_KEY` |
 | Base de datos | SQLite por defecto; PostgreSQL si defines `DB_NAME` en el `.env` |
 
 ## Instalación
@@ -58,6 +64,16 @@ npm run dev
 ```
 
 Abre http://localhost:5173 y entra con tu usuaria. 💅
+
+### 3. Try-on realista con IA (opcional)
+
+1. Crea una API key gratis en [Google AI Studio](https://aistudio.google.com).
+2. Agrégala al `backend/.env`: `GEMINI_API_KEY=tu-clave`.
+3. Sube tu foto de cuerpo completo en **Mi foto** y usa el botón
+   **✨ Ver realista** en cualquier outfit.
+
+> Nota de privacidad: al usar esta función, tu foto y las de las prendas del
+> outfit se envían a la API de Google para generar la imagen.
 
 El dev server de Vite hace proxy de `/api` y `/media` hacia el backend
 (puerto 8001), así que no hay que configurar CORS en desarrollo.

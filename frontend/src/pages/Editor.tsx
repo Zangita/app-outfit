@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 import Avatar from "../components/Avatar";
-import { CATEGORY_LABELS, type Garment, type Outfit, type OutfitItem } from "../types";
+import RenderModal from "../components/RenderModal";
+import {
+  CATEGORY_LABELS,
+  type AvatarPhoto,
+  type Garment,
+  type Outfit,
+  type OutfitItem,
+} from "../types";
 
 let layerKey = 0;
 
@@ -22,6 +29,8 @@ export default function Editor() {
   const [ocasion, setOcasion] = useState("");
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState("");
+  const [fotoBase, setFotoBase] = useState<AvatarPhoto | null>(null);
+  const [outfitModal, setOutfitModal] = useState<Outfit | null>(null);
 
   const garmentById = useMemo(
     () => new Map(garments.map((g) => [g.id, g])),
@@ -30,8 +39,12 @@ export default function Editor() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await api.get<Garment[]>("/api/garments/");
+      const [{ data }, { data: avatar }] = await Promise.all([
+        api.get<Garment[]>("/api/garments/"),
+        api.get<AvatarPhoto | null>("/api/avatar/"),
+      ]);
       setGarments(data);
+      setFotoBase(avatar);
       if (outfitId) {
         const { data: outfit } = await api.get<Outfit>(`/api/outfits/${outfitId}/`);
         setNombre(outfit.name);
@@ -103,14 +116,14 @@ export default function Editor() {
     window.addEventListener("pointerup", onUp);
   };
 
-  const guardar = async () => {
+  const guardar = async (irAOutfits = true): Promise<Outfit | null> => {
     if (!nombre.trim()) {
       setMensaje("Ponle un nombre a tu outfit 💕");
-      return;
+      return null;
     }
     if (layers.length === 0) {
       setMensaje("Agrega al menos una prenda ✨");
-      return;
+      return null;
     }
     setGuardando(true);
     setMensaje("");
@@ -120,17 +133,28 @@ export default function Editor() {
         occasion: ocasion.trim(),
         items: layers.map(({ key: _key, ...item }) => item),
       };
+      let outfit: Outfit;
       if (outfitId) {
-        await api.put(`/api/outfits/${outfitId}/`, payload);
+        ({ data: outfit } = await api.put<Outfit>(`/api/outfits/${outfitId}/`, payload));
       } else {
-        await api.post("/api/outfits/", payload);
+        ({ data: outfit } = await api.post<Outfit>("/api/outfits/", payload));
       }
-      navigate("/outfits");
+      if (irAOutfits) navigate("/outfits");
+      return outfit;
     } catch {
       setMensaje("No se pudo guardar 🥺 Intenta de nuevo.");
+      return null;
     } finally {
       setGuardando(false);
     }
+  };
+
+  const verRealista = async () => {
+    // Guarda (o crea) el outfit primero para que el render use la versión actual
+    const outfit = await guardar(false);
+    if (!outfit) return;
+    if (!outfitId) navigate(`/editor/${outfit.id}`, { replace: true });
+    setOutfitModal(outfit);
   };
 
   const seleccionada = layers.find((l) => l.key === selectedKey) ?? null;
@@ -142,7 +166,16 @@ export default function Editor() {
         <div className="editor-lienzo tarjeta" ref={canvasRef}>
           <span className="destello" style={{ top: "4%", left: "6%", fontSize: "1.2rem" }}>✨</span>
           <span className="destello" style={{ top: "10%", right: "8%", fontSize: "1rem", animationDelay: "1.2s" }}>💖</span>
-          <Avatar className="editor-avatar" />
+          {fotoBase ? (
+            <img
+              className="editor-avatar editor-avatar-foto"
+              src={fotoBase.cutout ?? fotoBase.image}
+              alt="Tu foto"
+              draggable={false}
+            />
+          ) : (
+            <Avatar className="editor-avatar" />
+          )}
           {ordenadas.map((layer) => {
             const g = garmentById.get(layer.garment);
             if (!g) return null;
@@ -224,9 +257,20 @@ export default function Editor() {
             />
           </div>
           {mensaje && <p className="login-error">{mensaje}</p>}
-          <button className="btn btn-primario" onClick={guardar} disabled={guardando}>
-            {guardando ? "Guardando…" : "Guardar outfit 💖"}
-          </button>
+          <div className="editor-guardar-botones">
+            <button className="btn btn-primario" onClick={() => guardar()} disabled={guardando}>
+              {guardando ? "Guardando…" : "Guardar outfit 💖"}
+            </button>
+            <button className="btn btn-secundario" onClick={verRealista} disabled={guardando}>
+              ✨ Ver realista
+            </button>
+          </div>
+          {!fotoBase && (
+            <p className="nota">
+              📸 Sube tu foto en <Link to="/foto">Mi foto</Link> para probar el outfit
+              sobre ti de verdad.
+            </p>
+          )}
         </div>
 
         <div className="tarjeta editor-armario">
@@ -257,6 +301,14 @@ export default function Editor() {
           })}
         </div>
       </div>
+
+      {outfitModal && (
+        <RenderModal
+          outfit={outfitModal}
+          onClose={() => setOutfitModal(null)}
+          onRendersChange={() => {}}
+        />
+      )}
     </div>
   );
 }

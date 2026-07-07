@@ -38,12 +38,25 @@ export interface OutfitItem {
   z: number;
 }
 
+export interface OutfitRender {
+  id: number;
+  image: string;
+  created_at: string;
+}
+
 export interface Outfit {
   id: number;
   name: string;
   occasion: string;
   items: OutfitItem[];
+  renders: OutfitRender[];
   favorite: boolean;
   created_at: string;
+  updated_at: string;
+}
+
+export interface AvatarPhoto {
+  image: string;
+  cutout: string | null;
   updated_at: string;
 }

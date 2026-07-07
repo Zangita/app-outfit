@@ -2,11 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
 import Avatar from "../components/Avatar";
-import type { Garment, Outfit } from "../types";
+import RenderModal from "../components/RenderModal";
+import type { AvatarPhoto, Garment, Outfit } from "../types";
 
 export default function Outfits() {
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [garments, setGarments] = useState<Garment[]>([]);
+  const [fotoBase, setFotoBase] = useState<AvatarPhoto | null>(null);
+  const [outfitModal, setOutfitModal] = useState<Outfit | null>(null);
 
   const garmentById = useMemo(
     () => new Map(garments.map((g) => [g.id, g])),
@@ -14,12 +17,14 @@ export default function Outfits() {
   );
 
   const cargar = async () => {
-    const [o, g] = await Promise.all([
+    const [o, g, a] = await Promise.all([
       api.get<Outfit[]>("/api/outfits/"),
       api.get<Garment[]>("/api/garments/"),
+      api.get<AvatarPhoto | null>("/api/avatar/"),
     ]);
     setOutfits(o.data);
     setGarments(g.data);
+    setFotoBase(a.data);
   };
 
   useEffect(() => {
@@ -58,7 +63,16 @@ export default function Outfits() {
           {outfits.map((o) => (
             <div key={o.id} className="tarjeta outfit aparecer">
               <Link to={`/editor/${o.id}`} className="outfit-preview" title="Editar outfit">
-                <Avatar className="outfit-preview-avatar" />
+                {fotoBase ? (
+                  <img
+                    className="outfit-preview-avatar outfit-preview-foto"
+                    src={fotoBase.cutout ?? fotoBase.image}
+                    alt=""
+                    draggable={false}
+                  />
+                ) : (
+                  <Avatar className="outfit-preview-avatar" />
+                )}
                 {[...o.items]
                   .sort((a, b) => a.z - b.z)
                   .map((item, i) => {
@@ -93,12 +107,27 @@ export default function Outfits() {
                 >
                   {o.favorite ? "💖" : "🤍"}
                 </button>
+                <button
+                  className="btn btn-secundario btn-mini"
+                  title="Ver cómo me queda con IA"
+                  onClick={() => setOutfitModal(o)}
+                >
+                  ✨{o.renders.length > 0 ? ` ${o.renders.length}` : ""}
+                </button>
                 <Link to={`/editor/${o.id}`} className="btn btn-secundario btn-mini">Editar</Link>
                 <button className="btn btn-peligro btn-mini" onClick={() => eliminar(o)}>Eliminar</button>
               </div>
             </div>
           ))}
         </div>
+      )}
+
+      {outfitModal && (
+        <RenderModal
+          outfit={outfitModal}
+          onClose={() => setOutfitModal(null)}
+          onRendersChange={cargar}
+        />
       )}
     </div>
   );

@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Closet from "./pages/Closet";
 import Editor from "./pages/Editor";
 import Outfits from "./pages/Outfits";
+import MiFoto from "./pages/MiFoto";
 import "./App.css";
 
 function Protected({ children }: { children: ReactNode }) {
@@ -29,6 +30,7 @@ function Nav() {
         <NavLink to="/" end>Mi clóset</NavLink>
         <NavLink to="/editor">Crear outfit</NavLink>
         <NavLink to="/outfits">Mis outfits</NavLink>
+        <NavLink to="/foto">Mi foto</NavLink>
         <button className="btn btn-secundario btn-mini" onClick={salir}>Salir</button>
       </nav>
     </header>
@@ -53,6 +55,7 @@ export default function App() {
         <Route path="/editor" element={<Layout><Editor /></Layout>} />
         <Route path="/editor/:outfitId" element={<Layout><Editor /></Layout>} />
         <Route path="/outfits" element={<Layout><Outfits /></Layout>} />
+        <Route path="/foto" element={<Layout><MiFoto /></Layout>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

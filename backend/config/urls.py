@@ -15,6 +15,7 @@ urlpatterns = [
     path("api/auth/login/", views.ThrottledLoginView.as_view(), name="token_obtain_pair"),
     path("api/auth/refresh/", views.ThrottledRefreshView.as_view(), name="token_refresh"),
     path("api/me/", views.me, name="me"),
+    path("api/avatar/", views.AvatarPhotoView.as_view(), name="avatar_photo"),
     path("api/", include(router.urls)),
 ]
 
