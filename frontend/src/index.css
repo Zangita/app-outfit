@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Pacifico&display=swap');
+
+:root {
+  --rosa-bg: #fff5fa;
+  --rosa-bg-2: #ffe9f4;
+  --rosa-suave: #ffd6e8;
+  --rosa: #ff8fbf;
+  --rosa-fuerte: #f0619e;
+  --rosa-oscuro: #c23d77;
+  --morado-suave: #b98ad4;
+  --texto: #5c3a4d;
+  --texto-suave: #a5788f;
+  --blanco: #ffffff;
+  --dorado: #e8c46a;
+  --sombra: 0 8px 24px rgba(240, 97, 158, 0.16);
+  --sombra-hover: 0 12px 32px rgba(240, 97, 158, 0.28);
+  --radio: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Quicksand', -apple-system, sans-serif;
+  color: var(--texto);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 214, 232, 0.55), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(185, 138, 212, 0.25), transparent 45%),
+    radial-gradient(circle at 70% 80%, rgba(255, 143, 191, 0.2), transparent 50%),
+    var(--rosa-bg);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3 {
+  color: var(--rosa-oscuro);
+}
+
+.titulo-script {
+  font-family: 'Pacifico', cursive;
+  font-weight: 400;
+  color: var(--rosa-fuerte);
+}
+
+/* ---------- botones ---------- */
+.btn {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-primario {
+  background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-fuerte) 100%);
+  color: var(--blanco);
+  box-shadow: var(--sombra);
+}
+
+.btn-primario:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--sombra-hover);
+}
+
+.btn-secundario {
+  background: var(--blanco);
+  color: var(--rosa-fuerte);
+  border: 2px solid var(--rosa-suave);
+}
+
+.btn-secundario:hover:not(:disabled) {
+  border-color: var(--rosa);
+  transform: translateY(-1px);
+}
+
+.btn-peligro {
+  background: transparent;
+  color: var(--texto-suave);
+  border: 2px solid transparent;
+}
+
+.btn-peligro:hover {
+  color: #d64545;
+  border-color: #f5c6c6;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.btn-mini {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+/* ---------- formularios ---------- */
+input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--texto);
+  background: var(--blanco);
+  border: 2px solid var(--rosa-suave);
+  border-radius: 14px;
+  padding: 0.6rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--rosa);
+  box-shadow: 0 0 0 4px rgba(255, 143, 191, 0.18);
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--rosa-oscuro);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.campo {
+  margin-bottom: 1rem;
+}
+
+/* ---------- tarjetas ---------- */
+.tarjeta {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  border: 1px solid rgba(255, 214, 232, 0.8);
+}
+
+/* ---------- animaciones ---------- */
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes brillar {
+  0%, 100% { opacity: 0.25; transform: scale(0.8) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(20deg); }
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.15); }
+  40% { transform: scale(1); }
+}
+
+.aparecer {
+  animation: aparecer 0.45s ease both;
+}
+
+/* destellos decorativos */
+.destello {
+  position: absolute;
+  pointer-events: none;
+  color: var(--rosa);
+  animation: brillar 2.8s ease-in-out infinite;
+  user-select: none;
+}
+
+/* parpadeo del avatar */
+@keyframes parpadeo {
+  0%, 94%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.08); }
+}
+
+.avatar-eyes {
+  transform-origin: 150px 103px;
+  animation: parpadeo 5.5s ease-in-out infinite;
+}
+
+/* barra de scroll rosadita */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--rosa-bg-2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rosa-suave);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rosa);
+}

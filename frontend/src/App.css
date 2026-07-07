@@ -1,0 +1,472 @@
+/* ---------- navegación ---------- */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.8rem 1.4rem;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--rosa-suave);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.nav-logo .latido {
+  display: inline-block;
+  animation: latido 2.4s ease-in-out infinite;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: var(--texto);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover {
+  background: var(--rosa-bg-2);
+  color: var(--rosa-fuerte);
+}
+
+.nav-links a.active {
+  background: var(--rosa-suave);
+  color: var(--rosa-oscuro);
+}
+
+.contenido {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.6rem 1.2rem 3rem;
+}
+
+.pagina-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.pagina-encabezado h1 {
+  margin: 0 0 0.2rem;
+  font-size: 1.7rem;
+}
+
+.subtitulo {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+.nota {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+/* ---------- login ---------- */
+.login-pagina {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-tarjeta {
+  width: 100%;
+  max-width: 380px;
+  padding: 2rem 1.8rem;
+  text-align: center;
+}
+
+.login-avatar {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 0.4rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rosa-suave), #f3e2ff);
+  overflow: hidden;
+  border: 3px solid var(--blanco);
+  box-shadow: var(--sombra);
+  animation: flotar 4s ease-in-out infinite;
+}
+
+.login-avatar-svg {
+  width: 100%;
+  height: 200%;
+  display: block;
+}
+
+.login-titulo {
+  margin: 0.4rem 0 0.2rem;
+  font-size: 1.9rem;
+}
+
+.login-subtitulo {
+  margin: 0 0 1.4rem;
+  color: var(--texto-suave);
+}
+
+.login-boton {
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+.login-error {
+  color: #d64545;
+  font-size: 0.88rem;
+  margin: 0.4rem 0;
+}
+
+form .campo {
+  text-align: left;
+}
+
+/* ---------- clóset ---------- */
+.form-prenda {
+  padding: 1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.form-prenda-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0 1.2rem;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.chip {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--texto);
+  background: var(--blanco);
+  border: 2px solid var(--rosa-suave);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  border-color: var(--rosa);
+}
+
+.chip-activo {
+  background: var(--rosa-suave);
+  color: var(--rosa-oscuro);
+  border-color: var(--rosa);
+}
+
+.grid-prendas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1.1rem;
+}
+
+.prenda {
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.prenda:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-hover);
+}
+
+.prenda-imagen {
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background:
+    repeating-conic-gradient(#fdeef6 0% 25%, #ffffff 0% 50%) 50% / 22px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.prenda-imagen img {
+  max-width: 92%;
+  max-height: 92%;
+  object-fit: contain;
+}
+
+.prenda-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.prenda-meta {
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+}
+
+.prenda-acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.btn-corazon {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0.1rem;
+}
+
+.btn-corazon:hover {
+  transform: scale(1.25);
+}
+
+.vacio {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.vacio-emoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.6rem;
+  animation: flotar 3.5s ease-in-out infinite;
+}
+
+/* ---------- editor ---------- */
+.editor {
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) 1fr;
+  gap: 1.4rem;
+  align-items: start;
+}
+
+.editor-lienzo-columna {
+  position: sticky;
+  top: 84px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.editor-lienzo {
+  position: relative;
+  aspect-ratio: 300 / 560;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 214, 232, 0.6), transparent 55%),
+    linear-gradient(180deg, #fff9fc 0%, #ffeef6 100%);
+  touch-action: none;
+}
+
+.editor-avatar {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.capa {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 3px 6px rgba(92, 58, 77, 0.18));
+}
+
+.capa:active {
+  cursor: grabbing;
+}
+
+.capa-activa {
+  outline: 2px dashed var(--rosa-fuerte);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.editor-controles {
+  padding: 1rem 1.2rem;
+}
+
+.control {
+  margin-top: 0.6rem;
+}
+
+.control input[type="range"] {
+  width: 100%;
+  accent-color: var(--rosa-fuerte);
+  padding: 0;
+  border: none;
+}
+
+.editor-controles-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-width: 0;
+}
+
+.editor-guardar {
+  padding: 1.2rem 1.4rem;
+}
+
+.editor-guardar h2 {
+  margin: 0 0 0.8rem;
+  font-size: 1.25rem;
+}
+
+.editor-armario {
+  padding: 1.2rem 1.4rem;
+}
+
+.editor-armario h3 {
+  margin: 0 0 0.6rem;
+}
+
+.armario-grupo {
+  margin-bottom: 0.9rem;
+}
+
+.armario-titulo {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.armario-fila {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.1rem;
+}
+
+.armario-prenda {
+  flex: 0 0 76px;
+  width: 76px;
+  height: 76px;
+  border-radius: 14px;
+  border: 2px solid var(--rosa-suave);
+  background: var(--blanco);
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.armario-prenda:hover {
+  transform: scale(1.08);
+  border-color: var(--rosa-fuerte);
+}
+
+.armario-prenda img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* ---------- outfits ---------- */
+.grid-outfits {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.1rem;
+}
+
+.outfit {
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.outfit-preview {
+  position: relative;
+  aspect-ratio: 300 / 560;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fff9fc 0%, #ffeef6 100%);
+  display: block;
+}
+
+.outfit-preview-avatar {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.outfit-preview img {
+  position: absolute;
+}
+
+.outfit-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 760px) {
+  .editor {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-lienzo-columna {
+    position: static;
+  }
+
+  .editor-lienzo {
+    max-width: 340px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .nav {
+    justify-content: center;
+  }
+
+  .pagina-encabezado {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
